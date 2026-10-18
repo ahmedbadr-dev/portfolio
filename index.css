@@ -125,10 +125,13 @@ html.bg-paused .hero-glow,
   will-change: transform;
 }
 
-.work-coverflow {
-  perspective: 1100px;
-  overscroll-behavior-x: contain;
-  touch-action: pan-y;
+.work-slider-track {
+  animation: work-slider 40s linear infinite;
+  will-change: transform;
+}
+
+.work-slider:hover .work-slider-track {
+  animation-play-state: paused;
 }
 
 .stack-slider-track {

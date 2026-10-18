@@ -9,7 +9,7 @@ import { Globe, Menu, X, Terminal, Shield, Cpu, Cloud, Boxes, Smartphone, Sparkl
 import FluidBackground from './components/FluidBackground';
 import CursorLight from './components/CursorLight';
 import GlitchText from './components/GlitchText';
-import WorkCoverflow from './components/WorkCoverflow';
+import ProjectSliderCard from './components/ProjectSliderCard';
 import TechSliderCard from './components/TechSliderCard';
 import ProjectModal, { navigateProjects } from './components/ProjectModal';
 import HeroMascot from './components/HeroMascot';
@@ -560,9 +560,9 @@ const App: React.FC = () => {
       </SectionShell>
 
       {/* SELECTED WORK SECTION */}
-      <SectionShell id="work" className="relative z-10 pt-20 md:pt-32 pb-12 md:pb-16 overflow-x-clip">
+      <section id="work" className="relative z-10 py-20 md:py-32 overflow-hidden">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6">
-          <Reveal className="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 md:mb-6 px-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-14 px-4">
             <div>
               <div className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-3 flex items-center gap-2">
                 <Terminal className="w-3.5 h-3.5 text-zinc-400" />
@@ -576,13 +576,28 @@ const App: React.FC = () => {
                 Selected Projects
               </p>
             </div>
-          </Reveal>
+          </div>
         </div>
 
-        <Reveal delay={0.1} y={28}>
-          <WorkCoverflow projects={PROJECTS} onSelect={setSelectedProject} />
-        </Reveal>
-      </SectionShell>
+        <div className="work-slider relative border-y border-white/15 bg-black/80">
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-12 md:w-24 z-10 bg-gradient-to-r from-black to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-12 md:w-24 z-10 bg-gradient-to-l from-black to-transparent" />
+
+          <div className="work-slider-track flex w-max">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex shrink-0 gap-4 pr-4 py-6 pl-4">
+                {PROJECTS.map((project) => (
+                  <ProjectSliderCard
+                    key={`${dup}-${project.id}`}
+                    project={project}
+                    onClick={() => setSelectedProject(project)}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* HOW I WORK SECTION */}
       <SectionShell id="process" className="relative z-10 py-20 md:py-32 bg-black/90 backdrop-blur-md border-t border-white/15 overflow-hidden">
