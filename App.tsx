@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
-import { Globe, Menu, X, Terminal, Shield, Cpu, Cloud, Boxes, Smartphone, Sparkles, LayoutGrid, Search, PenTool, Code2, Rocket, Briefcase, Layers, Scaling, Github } from 'lucide-react';
+import { Globe, Menu, X, Terminal, Shield, Cpu, Cloud, Boxes, Smartphone, Sparkles, LayoutGrid, Search, PenTool, Code2, Rocket, Briefcase, Layers, Scaling, Github, ArrowUpRight } from 'lucide-react';
 import FluidBackground from './components/FluidBackground';
 import CursorLight from './components/CursorLight';
 import GlitchText from './components/GlitchText';
@@ -317,17 +317,17 @@ const App: React.FC = () => {
       </AnimatePresence>
 
       {/* HERO SECTION */}
-      <header id="hero" className="relative h-[100svh] min-h-[640px] flex flex-col items-center justify-between overflow-hidden px-4 pt-20 pb-3">
-          <div className="z-10 text-center flex flex-col items-center w-full max-w-5xl my-auto">
+      <header id="hero" className="relative h-[100svh] min-h-[640px] flex flex-col justify-between overflow-hidden px-4 sm:px-6 md:px-10 lg:px-14 pt-24 pb-3">
+          <div className="z-10 flex flex-col items-start w-full max-w-[1400px] my-auto">
             {/* Interactive mascot (glasses character) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
-              className="mb-4 relative flex items-center justify-center"
+              className="mb-6 md:mb-8 relative flex items-center justify-start"
             >
               <div className="relative p-2 rounded-2xl border border-white/20 bg-zinc-950/90 shadow-[0_0_40px_rgba(255,255,255,0.08)]">
-                <HeroMascot size={128} />
+                <HeroMascot size={112} />
                 <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-white" />
                 <div className="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-white" />
                 <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b border-l border-white" />
@@ -335,24 +335,65 @@ const App: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Engineer Identity Pill — desktop only; mobile shows in header */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="hidden md:flex items-center gap-2.5 text-xs md:text-sm font-mono text-zinc-300 tracking-wider uppercase mb-3 bg-black/90 px-4 py-1.5 border border-white/20 shadow-2xl backdrop-blur-md"
-            >
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
-              <span className="font-bold text-white tracking-widest">AHMED BADR</span>
-              <span className="text-zinc-600">//</span>
-              <span className="text-zinc-400">DIGITAL PRODUCT DEVELOPER</span>
-            </motion.div>
+            {/* Headline composition: BUILD + AHMED BADR / DIGITAL PRODUCTS */}
+            <div className="relative w-full">
+              <div
+                className="absolute -z-20 left-[10%] top-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[560px] max-h-[560px] bg-white/5 blur-[80px] rounded-full pointer-events-none hero-glow"
+              />
 
-            {/* Main Headline & Subtitle with Single-Line Dynamic Scroll Rotation */}
-            <div className="relative w-full flex flex-col justify-center items-center px-2 mb-1.5">
-              <h1 className="text-[5.4vw] sm:text-4xl md:text-5xl lg:text-6xl font-heading font-black tracking-tight text-white leading-tight text-center whitespace-nowrap flex items-center justify-center gap-2 sm:gap-3">
-                <GlitchText text="Build" className="text-[5.4vw] sm:text-4xl md:text-5xl lg:text-6xl" />
-                <span className="relative inline-flex items-center justify-center overflow-hidden h-[1.3em] align-middle">
+              <h1 className="w-full font-heading font-black tracking-tight text-white uppercase">
+                {/* Row 1: BUILD + identity / supporting copy */}
+                <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 lg:gap-12">
+                  <GlitchText
+                    text="BUILD"
+                    className="shrink-0 text-[14vw] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9]"
+                  />
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    className="flex-1 min-w-0 pt-1 md:pt-3"
+                  >
+                    <div className="flex items-center gap-3 md:gap-4 w-full">
+                      <span className="hidden md:inline-flex items-center gap-2 shrink-0">
+                        <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
+                        <span className="text-xs md:text-sm font-mono font-bold tracking-[0.22em] text-white uppercase">
+                          AHMED BADR
+                        </span>
+                      </span>
+                      <span className="md:hidden text-xs font-mono font-bold tracking-[0.22em] text-white uppercase">
+                        AHMED BADR
+                      </span>
+                      <motion.span
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: 1.1, delay: 0.35, ease: 'circOut' }}
+                        className="block h-px flex-1 origin-left bg-white/35"
+                      />
+                    </div>
+                    <div className="mt-3 md:mt-4 min-h-[3.5rem] overflow-hidden">
+                      <AnimatePresence mode="wait" initial={false}>
+                        <motion.p
+                          key={PRODUCT_TYPES[productIndex].tagline}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -12 }}
+                          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                          className="max-w-md text-sm md:text-base font-heading font-medium leading-relaxed text-zinc-400"
+                        >
+                          {PRODUCT_TYPES[productIndex].tagline}
+                        </motion.p>
+                      </AnimatePresence>
+                    </div>
+                    <p className="mt-2 text-[10px] md:text-xs font-mono uppercase tracking-widest text-zinc-500">
+                      DIGITAL PRODUCT DEVELOPER
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Row 2: rotating product types (keeps existing rotation) */}
+                <div className="mt-3 md:mt-5 relative overflow-hidden h-[1.15em] text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.95]">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span
                       key={PRODUCT_TYPES[productIndex].title}
@@ -363,46 +404,16 @@ const App: React.FC = () => {
                         y: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
                         opacity: { duration: 0.65, ease: 'easeInOut' },
                       }}
-                      className="inline-block"
+                      className="absolute left-0 top-0 inline-block whitespace-nowrap"
                     >
                       <GlitchText
                         text={PRODUCT_TYPES[productIndex].title}
-                        className="text-[5.4vw] sm:text-4xl md:text-5xl lg:text-6xl"
+                        className="text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
                       />
                     </motion.span>
                   </AnimatePresence>
-                </span>
+                </div>
               </h1>
-              <p className="mt-1.5 sm:mt-2 text-xs sm:text-base md:text-lg lg:text-xl font-heading font-medium tracking-normal text-zinc-400 text-center">
-                That Move Businesses Forward.
-              </p>
-              {/* Ambient monochrome glow */}
-              <div
-                 className="absolute -z-20 w-[55vw] h-[55vw] bg-white/5 blur-[80px] rounded-full pointer-events-none hero-glow"
-              />
-            </div>
-            
-            <motion.div
-               initial={{ scaleX: 0 }}
-               animate={{ scaleX: 1 }}
-               transition={{ duration: 1.2, delay: 0.3, ease: "circOut" }}
-               className="w-full max-w-md h-px bg-gradient-to-r from-transparent via-white/40 to-transparent my-3"
-            />
-
-            {/* Dynamic Product Tagline */}
-            <div className="min-h-7 flex items-center justify-center px-4 mt-1 overflow-hidden">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.p
-                  key={PRODUCT_TYPES[productIndex].tagline}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -14 }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-xs sm:text-sm md:text-base font-mono text-zinc-300 max-w-2xl mx-auto tracking-wide text-center"
-                >
-                  {PRODUCT_TYPES[productIndex].tagline}
-                </motion.p>
-              </AnimatePresence>
             </div>
 
             {/* Call-to-Action Buttons */}
@@ -410,26 +421,28 @@ const App: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.75, duration: 0.8 }}
-              className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6"
+              className="mt-8 md:mt-10 flex flex-wrap items-center justify-start gap-4 sm:gap-5"
             >
               <button
                 onClick={() => scrollToSection('work')}
-                className="px-7 py-3 bg-white text-black font-mono text-xs sm:text-sm font-bold tracking-widest uppercase border border-white hover:bg-black hover:text-white transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.18)] cursor-pointer flex items-center gap-2"
+                className="px-1 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase hover:text-zinc-300 transition-colors duration-300 cursor-pointer flex items-center gap-2"
                 data-hover="true"
               >
                 <span>[VIEW MY WORK]</span>
+                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
               </button>
               <button
                 onClick={() => scrollToSection('contact')}
-                className="px-7 py-3 bg-black text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase border border-white/30 hover:border-white hover:bg-zinc-950 transition-all duration-300 cursor-pointer flex items-center gap-2"
+                className="px-6 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase border border-[#7a1f1f] rounded-full hover:border-[#a83333] hover:bg-[#7a1f1f]/15 transition-all duration-300 cursor-pointer flex items-center gap-2"
                 data-hover="true"
               >
                 <span>[START A PROJECT]</span>
+                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </motion.div>
 
             {/* Scroll Indicator Telemetry */}
-            <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
+            <div className="mt-5 flex items-center justify-start gap-2 text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>STAGE: 0{productIndex + 1} / 05</span>
               <span>//</span>
