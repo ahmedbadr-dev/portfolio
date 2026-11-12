@@ -14,6 +14,7 @@ import ProjectSliderCard from './components/ProjectSliderCard';
 import TechSliderCard from './components/TechSliderCard';
 import ProjectModal, { navigateProjects } from './components/ProjectModal';
 import HeroMascot from './components/HeroMascot';
+import ParticleOrb from './components/ParticleOrb';
 import { Reveal, FloatingCard, SectionShell } from './components/Reveal';
 import { Project } from './types';
 import { PROJECTS } from './data/projects';
@@ -102,22 +103,22 @@ const PRODUCT_TYPES = [
   },
   {
     title: 'Web Platforms',
-    tagline: 'High-performance web platforms, interactive portals & responsive web systems.',
+    tagline: 'High-performance web platforms, portals, and responsive systems.',
     label: 'WEB PLATFORMS',
   },
   {
     title: 'SaaS Products',
-    tagline: 'Scalable multi-tenant cloud software, billing systems & automated recurring pipelines.',
+    tagline: 'Scalable cloud software with billing, users, and automation.',
     label: 'SAAS PRODUCTS',
   },
   {
     title: 'ERP & CRM Systems',
-    tagline: 'Enterprise resource planning, CRM pipelines, business automation & analytics.',
+    tagline: 'Operations, CRM pipelines, automation, and analytics in one place.',
     label: 'ERP & CRM SYSTEMS',
   },
   {
     title: 'Mobile Applications',
-    tagline: 'Native & cross-platform iOS & Android mobile applications engineered for fluid touch.',
+    tagline: 'Cross-platform iOS and Android apps built for real use.',
     label: 'MOBILE APPLICATIONS',
   },
 ];
@@ -321,108 +322,115 @@ const App: React.FC = () => {
 
       {/* HERO SECTION */}
       <header id="hero" className="relative h-[100svh] min-h-[640px] flex flex-col justify-between overflow-hidden px-4 sm:px-6 md:px-10 lg:px-14 pt-24 pb-3">
-          <div className="z-10 flex flex-col items-start w-full max-w-[1400px] my-auto">
-            {/* Headline composition: BUILD + AHMED BADR / DIGITAL PRODUCTS */}
-            <div className="relative w-full">
-              <div
-                className="absolute -z-20 left-[10%] top-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[560px] max-h-[560px] bg-white/5 blur-[80px] rounded-full pointer-events-none hero-glow"
-              />
+          <div className="z-10 w-full max-w-[1400px] mx-auto my-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-6">
+            <div className="flex flex-col items-start flex-1 min-w-0">
+              {/* Headline composition: BUILD + AHMED BADR / DIGITAL PRODUCTS */}
+              <div className="relative w-full">
+                <div
+                  className="absolute -z-20 left-[10%] top-1/2 -translate-y-1/2 w-[50vw] h-[50vw] max-w-[560px] max-h-[560px] bg-white/5 blur-[80px] rounded-full pointer-events-none hero-glow"
+                />
 
-              <h1 className="w-full font-heading font-black tracking-tight text-white uppercase">
-                {/* Row 1: BUILD + identity / supporting copy */}
-                <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 lg:gap-12">
-                  <GlitchText
-                    text="BUILD"
-                    className="shrink-0 text-[14vw] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9]"
-                  />
+                <h1 className="w-full font-heading font-black tracking-tight text-white uppercase">
+                  {/* Row 1: BUILD + identity / supporting copy */}
+                  <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 lg:gap-10">
+                    <GlitchText
+                      text="BUILD"
+                      className="shrink-0 text-[14vw] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9]"
+                    />
 
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.15 }}
-                    className="flex-1 min-w-0 pt-1 md:pt-3"
-                  >
-                    <div className="flex items-center w-full">
-                      <span className="text-xs md:text-sm font-mono font-bold tracking-[0.22em] text-white uppercase">
-                        AHMED BADR
-                      </span>
-                    </div>
-                    <div className="mt-3 md:mt-4 min-h-[3.5rem] overflow-hidden">
-                      <AnimatePresence mode="wait" initial={false}>
-                        <motion.p
-                          key={PRODUCT_TYPES[productIndex].tagline}
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -12 }}
-                          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                          className="max-w-md text-sm md:text-base font-heading font-medium leading-relaxed text-zinc-400"
-                        >
-                          {PRODUCT_TYPES[productIndex].tagline}
-                        </motion.p>
-                      </AnimatePresence>
-                    </div>
-                    <p className="mt-2 text-[10px] md:text-xs font-mono uppercase tracking-widest text-zinc-500">
-                      DIGITAL PRODUCT DEVELOPER
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Row 2: rotating product types (keeps existing rotation) */}
-                <div className="mt-3 md:mt-5 relative overflow-hidden h-[1.15em] text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.95]">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={PRODUCT_TYPES[productIndex].title}
-                      initial={{ y: '100%', opacity: 0 }}
-                      animate={{ y: '0%', opacity: 1 }}
-                      exit={{ y: '-100%', opacity: 0 }}
-                      transition={{
-                        y: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
-                        opacity: { duration: 0.65, ease: 'easeInOut' },
-                      }}
-                      className="absolute left-0 top-0 inline-block whitespace-nowrap"
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.8, delay: 0.15 }}
+                      className="flex-1 min-w-0 pt-1 md:pt-3"
                     >
-                      <GlitchText
-                        text={PRODUCT_TYPES[productIndex].title}
-                        className="text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
-                      />
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-              </h1>
+                      <div className="flex items-center w-full">
+                        <span className="text-xs md:text-sm font-mono font-bold tracking-[0.22em] text-white uppercase">
+                          AHMED BADR
+                        </span>
+                      </div>
+                      <div className="mt-3 md:mt-4 min-h-[2.75rem] overflow-hidden">
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.p
+                            key={PRODUCT_TYPES[productIndex].tagline}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -12 }}
+                            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                            className="max-w-sm text-sm md:text-base font-heading font-medium leading-snug text-zinc-400 line-clamp-2"
+                          >
+                            {PRODUCT_TYPES[productIndex].tagline}
+                          </motion.p>
+                        </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Row 2: rotating product types (keeps existing rotation) */}
+                  <div className="mt-3 md:mt-5 relative overflow-hidden h-[1.15em] text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.95]">
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.span
+                        key={PRODUCT_TYPES[productIndex].title}
+                        initial={{ y: '100%', opacity: 0 }}
+                        animate={{ y: '0%', opacity: 1 }}
+                        exit={{ y: '-100%', opacity: 0 }}
+                        transition={{
+                          y: { duration: 0.85, ease: [0.22, 1, 0.36, 1] },
+                          opacity: { duration: 0.65, ease: 'easeInOut' },
+                        }}
+                        className="absolute left-0 top-0 inline-block whitespace-nowrap"
+                      >
+                        <GlitchText
+                          text={PRODUCT_TYPES[productIndex].title}
+                          className="text-[11vw] sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
+                        />
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                </h1>
+              </div>
+
+              {/* Call-to-Action Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.75, duration: 0.8 }}
+                className="mt-8 md:mt-10 flex flex-wrap items-center justify-start gap-4 sm:gap-5"
+              >
+                <button
+                  onClick={() => scrollToSection('work')}
+                  className="px-1 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase hover:text-zinc-300 transition-colors duration-300 cursor-pointer flex items-center gap-2"
+                  data-hover="true"
+                >
+                  <span>[VIEW MY WORK]</span>
+                  <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
+                </button>
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="px-6 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase border border-[#7a1f1f] rounded-full hover:border-[#a83333] hover:bg-[#7a1f1f]/15 transition-all duration-300 cursor-pointer flex items-center gap-2"
+                  data-hover="true"
+                >
+                  <span>[START A PROJECT]</span>
+                  <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
+                </button>
+              </motion.div>
+
+              {/* Scroll Indicator Telemetry */}
+              <div className="mt-5 flex items-center justify-start gap-2 text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>STAGE: 0{productIndex + 1} / 05</span>
+                <span>//</span>
+                <span>SCROLL_TO_EXPLORE_SERVICES</span>
+                <span className="inline-block animate-bounce">↓</span>
+              </div>
             </div>
 
-            {/* Call-to-Action Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75, duration: 0.8 }}
-              className="mt-8 md:mt-10 flex flex-wrap items-center justify-start gap-4 sm:gap-5"
-            >
-              <button
-                onClick={() => scrollToSection('work')}
-                className="px-1 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase hover:text-zinc-300 transition-colors duration-300 cursor-pointer flex items-center gap-2"
-                data-hover="true"
-              >
-                <span>[VIEW MY WORK]</span>
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="px-6 py-3 bg-transparent text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase border border-[#7a1f1f] rounded-full hover:border-[#a83333] hover:bg-[#7a1f1f]/15 transition-all duration-300 cursor-pointer flex items-center gap-2"
-                data-hover="true"
-              >
-                <span>[START A PROJECT]</span>
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
-              </button>
-            </motion.div>
-
-            {/* Scroll Indicator Telemetry */}
-            <div className="mt-5 flex items-center justify-start gap-2 text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>STAGE: 0{productIndex + 1} / 05</span>
-              <span>//</span>
-              <span>SCROLL_TO_EXPLORE_SERVICES</span>
-              <span className="inline-block animate-bounce">↓</span>
+            <div className="relative z-10 shrink-0 self-center lg:self-auto pointer-events-auto">
+              <ParticleOrb
+                logoSrc="/logo.png"
+                size={420}
+                className="w-[min(78vw,320px)] h-[min(78vw,320px)] md:w-[380px] md:h-[380px] lg:w-[420px] lg:h-[420px]"
+              />
             </div>
           </div>
 

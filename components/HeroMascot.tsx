@@ -10,6 +10,7 @@ interface HeroMascotProps {
   size?: number;
   className?: string;
   label?: string;
+  onClick?: () => void;
 }
 
 type PageMascotApi = {
@@ -67,8 +68,15 @@ function loadPageMascot(): Promise<PageMascotApi> {
   return scriptPromise;
 }
 
-const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '', label = 'Ahmed' }) => {
+const HeroMascot: React.FC<HeroMascotProps> = ({
+  size = 128,
+  className = '',
+  label = 'Ahmed',
+  onClick,
+}) => {
   const hostRef = useRef<HTMLDivElement>(null);
+  const onClickRef = useRef(onClick);
+  onClickRef.current = onClick;
 
   useEffect(() => {
     const host = hostRef.current;
@@ -76,6 +84,11 @@ const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '', lab
 
     let cancelled = false;
     let mascot: { destroy: () => void } | null = null;
+    let button: HTMLButtonElement | null = null;
+
+    const handleClick = () => {
+      onClickRef.current?.();
+    };
 
     loadPageMascot()
       .then((api) => {
@@ -92,6 +105,8 @@ const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '', lab
               ? 'hero-mascot-btn chat-mascot-btn'
               : 'hero-mascot-btn',
         });
+        button = host.querySelector('button');
+        button?.addEventListener('click', handleClick);
       })
       .catch((err) => {
         console.error(err);
@@ -99,6 +114,7 @@ const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '', lab
 
     return () => {
       cancelled = true;
+      button?.removeEventListener('click', handleClick);
       mascot?.destroy();
       if (host) host.innerHTML = '';
     };

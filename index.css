@@ -223,7 +223,14 @@ html.bg-paused .hero-glow,
   outline: none;
 }
 
-.chat-mascot,
+.chat-mascot {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
 .chat-mascot .hero-mascot-btn,
 .chat-mascot-btn {
   display: block !important;
@@ -232,13 +239,7 @@ html.bg-paused .hero-glow,
   border: none !important;
   padding: 0 !important;
   box-shadow: none !important;
-  pointer-events: none;
-}
-
-.chat-mascot [class*='label'],
-.chat-mascot-btn [class*='label'],
-.chat-mascot span:not(canvas):not(img) {
-  display: none !important;
+  overflow: visible !important;
 }
 
 @media (max-width: 767px) {
