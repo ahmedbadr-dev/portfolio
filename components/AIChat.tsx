@@ -8,7 +8,6 @@ import { Terminal, X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
-import HeroMascot from './HeroMascot';
 import { playTechBoot, playTechType, unlockTechAudio } from '../lib/techSound';
 
 const WELCOME =
@@ -220,19 +219,26 @@ const AIChat: React.FC = () => {
 
       <motion.button
         type="button"
-        whileHover={{ scale: 1.04 }}
+        whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.96 }}
         onClick={() => {
           setIsOpen((open) => !open);
           playTechType();
         }}
-        className="relative w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/25 bg-black/90 shadow-xl shadow-black/60 overflow-hidden flex items-center justify-center p-0 hover:border-white/50 transition-colors"
+        className="relative w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/30 bg-zinc-950 shadow-[0_0_24px_rgba(255,255,255,0.12)] flex items-center justify-center p-1.5 hover:border-white/60 transition-colors"
         data-hover="true"
         aria-label={isOpen ? 'Close AI terminal' : 'Open AI terminal'}
       >
-        <HeroMascot size={52} className="chat-mascot pointer-events-none" label="" />
+        <img
+          src="/mascots/kamran.png"
+          alt=""
+          width={56}
+          height={56}
+          draggable={false}
+          className="w-full h-full object-contain select-none pointer-events-none"
+        />
         {!isOpen && (
-          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="absolute top-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-black animate-pulse" />
         )}
       </motion.button>
     </div>
