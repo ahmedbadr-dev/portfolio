@@ -223,6 +223,24 @@ html.bg-paused .hero-glow,
   outline: none;
 }
 
+.chat-mascot,
+.chat-mascot .hero-mascot-btn,
+.chat-mascot-btn {
+  display: block !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.chat-mascot [class*='label'],
+.chat-mascot-btn [class*='label'],
+.chat-mascot span:not(canvas):not(img) {
+  display: none !important;
+}
+
 @media (max-width: 767px) {
   .lets-talk {
     gap: 0.2rem;

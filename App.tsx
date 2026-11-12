@@ -322,16 +322,6 @@ const App: React.FC = () => {
       {/* HERO SECTION */}
       <header id="hero" className="relative h-[100svh] min-h-[640px] flex flex-col justify-between overflow-hidden px-4 sm:px-6 md:px-10 lg:px-14 pt-24 pb-3">
           <div className="z-10 flex flex-col items-start w-full max-w-[1400px] my-auto">
-            {/* Interactive mascot (glasses character) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="mb-6 md:mb-8 relative flex items-center justify-start"
-            >
-              <HeroMascot size={112} />
-            </motion.div>
-
             {/* Headline composition: BUILD + AHMED BADR / DIGITAL PRODUCTS */}
             <div className="relative w-full">
               <div

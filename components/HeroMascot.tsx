@@ -9,6 +9,7 @@ import React, { useEffect, useRef } from 'react';
 interface HeroMascotProps {
   size?: number;
   className?: string;
+  label?: string;
 }
 
 type PageMascotApi = {
@@ -66,7 +67,7 @@ function loadPageMascot(): Promise<PageMascotApi> {
   return scriptPromise;
 }
 
-const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '' }) => {
+const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '', label = 'Ahmed' }) => {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,8 +85,12 @@ const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '' }) =
           directions: '/mascots/kamran-directions.webp',
           reactions: '/mascots/kamran-reactions.webp',
           size,
-          label: 'Ahmed',
-          className: className.includes('footer-mascot') ? 'hero-mascot-btn footer-mascot-btn' : 'hero-mascot-btn',
+          label,
+          className: className.includes('footer-mascot')
+            ? 'hero-mascot-btn footer-mascot-btn'
+            : className.includes('chat-mascot')
+              ? 'hero-mascot-btn chat-mascot-btn'
+              : 'hero-mascot-btn',
         });
       })
       .catch((err) => {
@@ -97,7 +102,7 @@ const HeroMascot: React.FC<HeroMascotProps> = ({ size = 128, className = '' }) =
       mascot?.destroy();
       if (host) host.innerHTML = '';
     };
-  }, [size, className]);
+  }, [size, className, label]);
 
   return (
     <div

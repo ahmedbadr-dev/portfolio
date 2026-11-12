@@ -1,22 +1,29 @@
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
-*/
+ */
 
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { Terminal, X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import HeroMascot from './HeroMascot';
+import { playTechBoot, playTechType, unlockTechAudio } from '../lib/techSound';
+
+const WELCOME =
+  '// SYS_BOOT :: AHMED_CLI online. Ask about projects, stack, services — or how to start a build.';
 
 const AIChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: 'model', text: '// AHMED_BADR_CLI online. Ask about projects, services, stack — or how to start a build.' }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [typingText, setTypingText] = useState('');
+  const [isTypingWelcome, setIsTypingWelcome] = useState(false);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const welcomedRef = useRef(false);
+  const typeTimerRef = useRef<number | null>(null);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -30,7 +37,7 @@ const AIChat: React.FC = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isOpen]);
+  }, [messages, typingText, isOpen, isLoading]);
 
   useEffect(() => {
     const openTerminal = () => setIsOpen(true);
@@ -38,14 +45,61 @@ const AIChat: React.FC = () => {
     return () => window.removeEventListener('open-ai-terminal', openTerminal);
   }, []);
 
+  useEffect(() => {
+    const unlock = () => unlockTechAudio();
+    window.addEventListener('pointerdown', unlock, { once: true });
+    window.addEventListener('keydown', unlock, { once: true });
+
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const bootDelay = window.setTimeout(() => {
+      setIsOpen(true);
+      playTechBoot();
+
+      if (welcomedRef.current) return;
+      welcomedRef.current = true;
+
+      if (reduceMotion) {
+        setMessages([{ role: 'model', text: WELCOME }]);
+        return;
+      }
+
+      setIsTypingWelcome(true);
+      let i = 0;
+      const tick = () => {
+        i += 1;
+        setTypingText(WELCOME.slice(0, i));
+        if (i % 2 === 0) playTechType();
+        if (i < WELCOME.length) {
+          typeTimerRef.current = window.setTimeout(tick, 22 + Math.random() * 28);
+        } else {
+          setIsTypingWelcome(false);
+          setTypingText('');
+          setMessages([{ role: 'model', text: WELCOME }]);
+        }
+      };
+      typeTimerRef.current = window.setTimeout(tick, 280);
+    }, 700);
+
+    return () => {
+      window.clearTimeout(bootDelay);
+      if (typeTimerRef.current) window.clearTimeout(typeTimerRef.current);
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown', unlock);
+    };
+  }, []);
+
   const handleSend = async () => {
     const text = input.trim();
-    if (!text) return;
+    if (!text || isTypingWelcome) return;
 
     const userMessage: ChatMessage = { role: 'user', text };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
+    playTechType();
 
     setTimeout(scrollToBottom, 100);
 
@@ -58,8 +112,8 @@ const AIChat: React.FC = () => {
     }).catch(() => {});
 
     const responseText = await sendMessageToGemini(text, history);
-    
-    setMessages(prev => [...prev, { role: 'model', text: responseText }]);
+
+    setMessages((prev) => [...prev, { role: 'model', text: responseText }]);
     setIsLoading(false);
   };
 
@@ -68,20 +122,22 @@ const AIChat: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-4 w-[90vw] md:w-96 bg-black/95 backdrop-blur-2xl border border-white/20 rounded-lg overflow-hidden shadow-2xl shadow-black/80"
+            exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-3 w-[min(92vw,22rem)] bg-black/95 backdrop-blur-2xl border border-white/20 overflow-hidden shadow-2xl shadow-black/80"
           >
-            {/* Terminal Header */}
-            <div className="bg-zinc-950 px-4 py-3 flex justify-between items-center border-b border-white/15">
-              <div className="flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-white" />
-                <span className="text-xs font-bold text-white tracking-wider uppercase">AHMED_CLI // TERMINAL</span>
+            <div className="bg-zinc-950 px-3 py-2.5 flex justify-between items-center border-b border-white/15">
+              <div className="flex items-center gap-2 min-w-0">
+                <Terminal className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span className="text-[10px] font-bold text-zinc-300 tracking-widest uppercase truncate">
+                  AHMED_CLI // TERMINAL
+                </span>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)} 
-                className="text-zinc-400 hover:text-white p-1 transition-colors" 
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-zinc-400 hover:text-white p-1 transition-colors"
                 data-hover="true"
                 aria-label="Close terminal"
               >
@@ -89,11 +145,10 @@ const AIChat: React.FC = () => {
               </button>
             </div>
 
-            {/* Messages */}
-            <div 
+            <div
               ref={chatContainerRef}
               data-lenis-prevent
-              className="h-64 md:h-80 overflow-y-auto p-4 space-y-3 text-xs leading-relaxed"
+              className="h-52 md:h-64 overflow-y-auto p-3 space-y-2.5 text-xs leading-relaxed"
             >
               {messages.map((msg, idx) => (
                 <div
@@ -101,7 +156,7 @@ const AIChat: React.FC = () => {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] p-3 rounded border text-xs ${
+                    className={`max-w-[90%] p-2.5 border text-[11px] md:text-xs ${
                       msg.role === 'user'
                         ? 'bg-white text-black border-white font-medium'
                         : 'bg-zinc-900/90 text-zinc-300 border-white/10'
@@ -111,9 +166,19 @@ const AIChat: React.FC = () => {
                   </div>
                 </div>
               ))}
+
+              {isTypingWelcome && (
+                <div className="flex justify-start">
+                  <div className="max-w-[90%] p-2.5 border border-emerald-500/30 bg-zinc-900/90 text-emerald-300/90 text-[11px] md:text-xs">
+                    <span>{typingText}</span>
+                    <span className="inline-block w-1.5 h-3 ml-0.5 align-middle bg-emerald-400 animate-pulse" />
+                  </div>
+                </div>
+              )}
+
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-zinc-900 border border-white/10 p-3 rounded flex items-center gap-2 text-zinc-400 text-xs">
+                  <div className="bg-zinc-900 border border-white/10 p-2.5 flex items-center gap-2 text-zinc-400 text-[11px]">
                     <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
                     <span>executing query...</span>
                   </div>
@@ -121,8 +186,7 @@ const AIChat: React.FC = () => {
               )}
             </div>
 
-            {/* Terminal Input */}
-            <div className="p-3 border-t border-white/15 bg-black">
+            <div className="p-2.5 border-t border-white/15 bg-black">
               <div className="flex items-center gap-2">
                 <span className="text-zinc-500 font-bold text-xs select-none">&gt;_</span>
                 <input
@@ -136,13 +200,15 @@ const AIChat: React.FC = () => {
                     }
                   }}
                   placeholder="enter command or question..."
-                  className="flex-1 bg-transparent text-white placeholder-zinc-600 text-xs focus:outline-none"
+                  disabled={isTypingWelcome}
+                  className="flex-1 bg-transparent text-white placeholder-zinc-600 text-xs focus:outline-none disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}
-                  disabled={isLoading || !input.trim()}
-                  className="bg-white text-black px-3 py-1.5 rounded text-xs font-bold uppercase hover:bg-zinc-200 transition-colors disabled:opacity-40"
+                  disabled={isLoading || isTypingWelcome || !input.trim()}
+                  className="bg-white text-black px-2.5 py-1.5 text-xs font-bold uppercase hover:bg-zinc-200 transition-colors disabled:opacity-40"
                   data-hover="true"
+                  aria-label="Send"
                 >
                   <Send className="w-3.5 h-3.5" />
                 </button>
@@ -152,16 +218,22 @@ const AIChat: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Terminal Toggle Button */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="h-11 px-4 rounded border border-white/30 bg-black text-white flex items-center gap-2 text-xs font-bold uppercase tracking-widest shadow-xl hover:bg-white hover:text-black transition-all group"
+        type="button"
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+        onClick={() => {
+          setIsOpen((open) => !open);
+          playTechType();
+        }}
+        className="relative w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/25 bg-black/90 shadow-xl shadow-black/60 overflow-hidden flex items-center justify-center p-0 hover:border-white/50 transition-colors"
         data-hover="true"
+        aria-label={isOpen ? 'Close AI terminal' : 'Open AI terminal'}
       >
-        <Terminal className="w-4 h-4" />
-        <span>{isOpen ? 'CLOSE CLI' : 'AI_TERMINAL'}</span>
+        <HeroMascot size={52} className="chat-mascot pointer-events-none" label="" />
+        {!isOpen && (
+          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        )}
       </motion.button>
     </div>
   );
