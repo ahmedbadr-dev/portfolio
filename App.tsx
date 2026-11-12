@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
+import { useLenis } from 'lenis/react';
 import { Globe, Menu, X, Terminal, Shield, Cpu, Cloud, Boxes, Smartphone, Sparkles, LayoutGrid, Search, PenTool, Code2, Rocket, Briefcase, Layers, Scaling, Github, ArrowUpRight } from 'lucide-react';
 import FluidBackground from './components/FluidBackground';
 import CursorLight from './components/CursorLight';
@@ -13,7 +14,6 @@ import ProjectSliderCard from './components/ProjectSliderCard';
 import TechSliderCard from './components/TechSliderCard';
 import ProjectModal, { navigateProjects } from './components/ProjectModal';
 import HeroMascot from './components/HeroMascot';
-import ScrollTechLine from './components/ScrollTechLine';
 import { Reveal, FloatingCard, SectionShell } from './components/Reveal';
 import { Project } from './types';
 import { PROJECTS } from './data/projects';
@@ -183,20 +183,25 @@ const App: React.FC = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const lenis = useLenis();
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
-    if (element) {
-      const headerOffset = 100;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    if (!element) return;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    if (lenis) {
+      lenis.scrollTo(element, { offset: -100 });
+      return;
     }
+
+    const headerOffset = 100;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
   };
 
   const handleNavigateProject = (direction: 'next' | 'prev') => {
@@ -212,8 +217,6 @@ const App: React.FC = () => {
       <Suspense fallback={null}>
         <AIChat />
       </Suspense>
-      <ScrollTechLine />
-      
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 md:py-4 bg-black/85 backdrop-blur-xl border-b border-white/10 gap-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 md:flex-none">
@@ -326,13 +329,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="mb-6 md:mb-8 relative flex items-center justify-start"
             >
-              <div className="relative p-2 rounded-2xl border border-white/20 bg-zinc-950/90 shadow-[0_0_40px_rgba(255,255,255,0.08)]">
-                <HeroMascot size={112} />
-                <div className="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-white" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-white" />
-                <div className="absolute -bottom-1 -left-1 w-2 h-2 border-b border-l border-white" />
-                <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-white" />
-              </div>
+              <HeroMascot size={112} />
             </motion.div>
 
             {/* Headline composition: BUILD + AHMED BADR / DIGITAL PRODUCTS */}
@@ -355,22 +352,10 @@ const App: React.FC = () => {
                     transition={{ duration: 0.8, delay: 0.15 }}
                     className="flex-1 min-w-0 pt-1 md:pt-3"
                   >
-                    <div className="flex items-center gap-3 md:gap-4 w-full">
-                      <span className="hidden md:inline-flex items-center gap-2 shrink-0">
-                        <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
-                        <span className="text-xs md:text-sm font-mono font-bold tracking-[0.22em] text-white uppercase">
-                          AHMED BADR
-                        </span>
-                      </span>
-                      <span className="md:hidden text-xs font-mono font-bold tracking-[0.22em] text-white uppercase">
+                    <div className="flex items-center w-full">
+                      <span className="text-xs md:text-sm font-mono font-bold tracking-[0.22em] text-white uppercase">
                         AHMED BADR
                       </span>
-                      <motion.span
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: 1.1, delay: 0.35, ease: 'circOut' }}
-                        className="block h-px flex-1 origin-left bg-white/35"
-                      />
                     </div>
                     <div className="mt-3 md:mt-4 min-h-[3.5rem] overflow-hidden">
                       <AnimatePresence mode="wait" initial={false}>

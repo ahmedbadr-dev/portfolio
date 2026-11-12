@@ -92,6 +92,7 @@ const AIChat: React.FC = () => {
             {/* Messages */}
             <div 
               ref={chatContainerRef}
+              data-lenis-prevent
               className="h-64 md:h-80 overflow-y-auto p-4 space-y-3 text-xs leading-relaxed"
             >
               {messages.map((msg, idx) => (

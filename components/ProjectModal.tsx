@@ -67,7 +67,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, onNavigat
               <X className="w-5 h-5" />
             </button>
 
-            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col md:flex-row md:overflow-hidden">
+            <div
+              data-lenis-prevent
+              className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col md:flex-row md:overflow-hidden"
+            >
               <div className="w-full md:w-1/2 h-52 sm:h-64 md:h-auto md:min-h-[420px] relative overflow-hidden bg-zinc-950 shrink-0">
                 <AnimatePresence mode="wait">
                   <motion.img
