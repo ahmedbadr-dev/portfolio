@@ -12,6 +12,15 @@ export const PROJECTS: Project[] = [
     url: 'https://aqari-crm.com/',
   },
   {
+    id: '10',
+    name: 'GRAVON',
+    category: 'Enterprise Consulting',
+    tag: 'CORPORATE_SITE',
+    image: '/projects/gravon.jpg',
+    description: 'Corporate website for GRAVON — a Riyadh-based consulting firm focused on business strategy, ERP advisory, digital transformation, BI cockpits, and intelligent enterprise systems.',
+    url: 'https://gravon-agency.vercel.app/',
+  },
+  {
     id: '2',
     name: 'HOUKAM — Fleet ERP',
     category: 'ERP Logistics',

@@ -23,6 +23,7 @@ WHAT HE BUILDS
 
 SELECTED WORK
 - AQARI — Real Estate CRM (https://aqari-crm.com/)
+- GRAVON — enterprise consulting & digital transformation site (https://gravon-agency.vercel.app/)
 - HOUKAM — Fleet ERP logistics (https://houkam.net/)
 - Rafiq — Pet care platform (https://rafiq.pet/)
 - LAQI — Property broker app (https://laqi.app/)
